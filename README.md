@@ -11,6 +11,7 @@ Backend developers work with server software that handles requests from clients 
 - **Ruby on Rails**
 - **Spring Boot**
 
+
 ### 2. **Database Management**
 Backend development involves working with databases to store, retrieve, and manipulate data. This includes:
 - **Database Design:** Structuring the database to efficiently store and retrieve data.
