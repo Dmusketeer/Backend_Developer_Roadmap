@@ -1476,3 +1476,2227 @@ SQL aggregate functions are used to perform calculations on sets of rows to give
    ```
 
 Aggregate functions are powerful tools for summarizing and analyzing data in SQL queries, especially when dealing with large datasets.
+
+
+### LIKE operator
+
+The `LIKE` operator in SQL is used to search for a specified pattern in a column. It is commonly used in the `WHERE` clause of a `SELECT`, `UPDATE`, or `DELETE` statement. The `LIKE` operator is often combined with wildcard characters to create flexible pattern-matching searches.
+
+### Wildcard Characters
+
+1. **% (Percent Sign)**: Represents zero, one, or multiple characters.
+2. **_ (Underscore)**: Represents a single character.
+
+### Syntax
+
+```sql
+SELECT column1, column2, ...
+FROM table_name
+WHERE column LIKE pattern;
+```
+
+### Examples
+
+1. **Using % Wildcard**
+
+   To find all customers whose names start with 'A':
+   ```sql
+   SELECT * FROM customers
+   WHERE name LIKE 'A%';
+   ```
+   This query retrieves all rows where the `name` starts with 'A'.
+
+2. **Using _ Wildcard**
+
+   To find all customers whose names have 'a' as the second character:
+   ```sql
+   SELECT * FROM customers
+   WHERE name LIKE '_a%';
+   ```
+   This query retrieves all rows where the `name` has 'a' as the second character.
+
+3. **Combining % and _ Wildcards**
+
+   To find all customers whose names start with 'A' and have exactly three characters:
+   ```sql
+   SELECT * FROM customers
+   WHERE name LIKE 'A__';
+   ```
+   This query retrieves all rows where the `name` starts with 'A' and is exactly three characters long.
+
+4. **Using % Wildcard for Substring Search**
+
+   To find all products containing the word 'chair':
+   ```sql
+   SELECT * FROM products
+   WHERE description LIKE '%chair%';
+   ```
+   This query retrieves all rows where the `description` contains 'chair' anywhere within the text.
+
+5. **Using NOT LIKE**
+
+   To find all customers whose names do not start with 'A':
+   ```sql
+   SELECT * FROM customers
+   WHERE name NOT LIKE 'A%';
+   ```
+   This query retrieves all rows where the `name` does not start with 'A'.
+
+### Case Sensitivity
+
+- **SQL Server**: Case sensitivity depends on the collation settings of the database.
+- **MySQL**: The `LIKE` operator is case-insensitive by default, but can be made case-sensitive using the `BINARY` keyword.
+  
+  Example:
+  ```sql
+  SELECT * FROM customers
+  WHERE name LIKE BINARY 'a%';
+  ```
+
+- **PostgreSQL**: By default, the `LIKE` operator is case-sensitive. Use `ILIKE` for case-insensitive pattern matching.
+
+  Example:
+  ```sql
+  SELECT * FROM customers
+  WHERE name ILIKE 'a%';
+  ```
+
+The `LIKE` operator is a powerful tool for pattern matching and searching within text data, offering flexibility through the use of wildcards.
+
+
+## SQL wildcard characters
+
+SQL wildcard characters are used with the `LIKE` operator to search for patterns in text data. Here are the primary wildcard characters and their uses:
+
+1. **Percent Sign (%)**: Represents zero, one, or multiple characters. It is used to search for a sequence of characters.
+
+   Examples:
+   - `'%abc'`: Matches any string that ends with 'abc'.
+   - `'abc%'`: Matches any string that starts with 'abc'.
+   - `'%abc%'`: Matches any string that contains 'abc'.
+
+   ```sql
+   SELECT * FROM employees WHERE name LIKE 'A%';
+   ```
+
+   This query retrieves all employees whose names start with 'A'.
+
+2. **Underscore (_)**: Represents a single character. It is used to search for strings with a specific pattern of characters.
+
+   Examples:
+   - `'a_c'`: Matches any three-character string that starts with 'a' and ends with 'c'.
+   - `'__a'`: Matches any three-character string that ends with 'a'.
+
+   ```sql
+   SELECT * FROM employees WHERE name LIKE '_a_';
+   ```
+
+   This query retrieves all employees whose names have 'a' as the second character.
+
+3. **Square Brackets ([])**: Used to specify a set or range of characters. (SQL Server)
+
+   Examples:
+   - `'a[bcd]e'`: Matches 'abe', 'ace', or 'ade'.
+   - `'t[aeiou]n'`: Matches 'tan', 'ten', 'tin', 'ton', or 'tun'.
+
+   ```sql
+   SELECT * FROM employees WHERE name LIKE 'J[oa]n';
+   ```
+
+   This query retrieves all employees whose names are 'Jan' or 'Jon'.
+
+4. **Caret (^)**: Used inside square brackets to specify characters that should not be matched. (SQL Server)
+
+   Example:
+   - `'t[^aeiou]n'`: Matches 'tbn', 'tcn', etc., but not 'tan', 'ten', 'tin', 'ton', or 'tun'.
+
+   ```sql
+   SELECT * FROM employees WHERE name LIKE 'J[^oa]n';
+   ```
+
+   This query retrieves all employees whose names do not have 'o' or 'a' as the second character, like 'Jen' or 'Jim'.
+
+5. **Hyphen (-)**: Used inside square brackets to specify a range of characters. (SQL Server)
+
+   Example:
+   - `'a[a-z]c'`: Matches any three-character string that starts with 'a', ends with 'c', and has any lowercase letter in the middle.
+
+   ```sql
+   SELECT * FROM employees WHERE name LIKE '[A-C]%';
+   ```
+
+   This query retrieves all employees whose names start with 'A', 'B', or 'C'.
+
+### Examples
+
+1. **Finding Names Starting with a Specific Letter**
+
+   ```sql
+   SELECT * FROM customers WHERE name LIKE 'S%';
+   ```
+   This retrieves all customers whose names start with 'S'.
+
+2. **Finding Names Ending with a Specific Letter**
+
+   ```sql
+   SELECT * FROM customers WHERE name LIKE '%n';
+   ```
+
+   This retrieves all customers whose names end with 'n'.
+
+3. **Finding Names with a Specific Pattern**
+
+   ```sql
+   SELECT * FROM customers WHERE name LIKE '_a%';
+   ```
+
+   This retrieves all customers whose names have 'a' as the second character.
+
+4. **Finding Names Containing a Specific Substring**
+
+   ```sql
+   SELECT * FROM customers WHERE name LIKE '%ann%';
+   ```
+
+   This retrieves all customers whose names contain 'ann'.
+
+### Notes
+
+- **Case Sensitivity**: The behavior of the `LIKE` operator with regard to case sensitivity depends on the SQL dialect and the collation settings of the database.
+  - **SQL Server**: Case sensitivity depends on the collation settings.
+  - **MySQL**: `LIKE` is case-insensitive by default, but can be made case-sensitive using the `BINARY` keyword.
+  - **PostgreSQL**: `LIKE` is case-sensitive by default; use `ILIKE` for case-insensitive searches.
+
+By using these wildcard characters effectively, you can perform powerful and flexible pattern matching in SQL queries.
+
+
+### `IN` operator
+
+The `IN` operator in SQL is used to specify multiple values in a `WHERE` clause. It allows you to filter records based on whether a column's value matches any value in a specified list. This operator is a convenient way to combine multiple `OR` conditions into a single, more readable query.
+
+### Syntax
+
+```sql
+SELECT column1, column2, ...
+FROM table_name
+WHERE column_name IN (value1, value2, ...);
+```
+
+### Examples
+
+1. **Basic Usage**
+
+   To find all employees whose department is either 'Sales', 'Marketing', or 'HR':
+
+   ```sql
+   SELECT * FROM employees
+   WHERE department IN ('Sales', 'Marketing', 'HR');
+   ```
+
+   This query retrieves all rows where the `department` column matches any of the specified values.
+
+2. **With Numeric Values**
+
+   To find all orders with IDs 1, 2, or 3:
+
+   ```sql
+   SELECT * FROM orders
+   WHERE order_id IN (1, 2, 3);
+   ```
+
+   This query retrieves all rows where the `order_id` column is either 1, 2, or 3.
+
+3. **With Subquery**
+
+   The `IN` operator can also be used with a subquery to filter records based on the result of another query. For example, to find all employees who are in departments that have more than 10 employees:
+
+   ```sql
+   SELECT * FROM employees
+   WHERE department_id IN (
+       SELECT department_id
+       FROM departments
+       WHERE employee_count > 10
+   );
+   ```
+
+   This query retrieves all employees who work in departments with more than 10 employees.
+
+4. **NOT IN**
+
+   The `NOT IN` operator is used to exclude records that match any value in a specified list. For example, to find all employees whose department is not 'Sales', 'Marketing', or 'HR':
+
+   ```sql
+   SELECT * FROM employees
+   WHERE department NOT IN ('Sales', 'Marketing', 'HR');
+   ```
+
+   This query retrieves all rows where the `department` column does not match any of the specified values.
+
+### Performance Considerations
+
+- **Large Lists**: Using the `IN` operator with very large lists can impact performance. In such cases, consider alternative approaches such as joining with a temporary table.
+- **Indexes**: The performance of the `IN` operator can be improved by ensuring that the column being filtered is indexed.
+- **Subqueries**: When using subqueries with `IN`, ensure that the subquery is efficient and returns a manageable number of results.
+
+### Example Scenarios
+
+1. **Filter by Multiple Criteria**
+
+   To find products that are either in category 1, 2, or 3 and are priced above $50:
+
+   ```sql
+   SELECT * FROM products
+   WHERE category_id IN (1, 2, 3) AND price > 50;
+   ```
+
+2. **Combining `IN` with Other Conditions**
+
+   To find customers from specific cities who have placed more than 5 orders:
+
+   ```sql
+   SELECT * FROM customers
+   WHERE city IN ('New York', 'Los Angeles', 'Chicago')
+   AND order_count > 5;
+   ```
+
+3. **Using `IN` with Strings**
+
+   To find all books authored by 'John Doe', 'Jane Smith', or 'Emily Johnson':
+
+   ```sql
+   SELECT * FROM books
+   WHERE author IN ('John Doe', 'Jane Smith', 'Emily Johnson');
+   ```
+
+The `IN` operator is a powerful tool for simplifying SQL queries that involve multiple conditions, making your code more readable and maintainable.
+
+
+### `BETWEEN` operator
+
+The `BETWEEN` operator in SQL is used to filter the result set within a certain range. The range is inclusive, meaning it includes both the start and end values. This operator can be used with numeric, date, and text data types.
+
+### Syntax
+
+```sql
+SELECT column1, column2, ...
+FROM table_name
+WHERE column_name BETWEEN value1 AND value2;
+```
+
+### Examples
+
+1. **Numeric Range**
+
+   To find all employees with salaries between 30,000 and 70,000:
+
+   ```sql
+   SELECT * FROM employees
+   WHERE salary BETWEEN 30000 AND 70000;
+   ```
+
+   This query retrieves all rows where the `salary` column is between 30,000 and 70,000, inclusive.
+
+2. **Date Range**
+
+   To find all orders placed between January 1, 2023, and December 31, 2023:
+
+   ```sql
+   SELECT * FROM orders
+   WHERE order_date BETWEEN '2023-01-01' AND '2023-12-31';
+   ```
+
+   This query retrieves all rows where the `order_date` column falls within the specified date range.
+
+3. **Text Range**
+
+   To find all products whose names are alphabetically between 'Apple' and 'Orange':
+
+   ```sql
+   SELECT * FROM products
+   WHERE product_name BETWEEN 'Apple' AND 'Orange';
+   ```
+
+   This query retrieves all rows where the `product_name` column falls alphabetically between 'Apple' and 'Orange'.
+
+### Using `NOT BETWEEN`
+
+The `NOT BETWEEN` operator is used to exclude a range of values.
+
+To find all employees with salaries not between 30,000 and 70,000:
+
+```sql
+SELECT * FROM employees
+WHERE salary NOT BETWEEN 30000 AND 70000;
+```
+
+This query retrieves all rows where the `salary` column is outside the range of 30,000 and 70,000.
+
+### Combining `BETWEEN` with Other Conditions
+
+You can combine the `BETWEEN` operator with other conditions using `AND` or `OR` operators.
+
+To find all employees with salaries between 30,000 and 70,000 who work in the 'Sales' department:
+
+```sql
+SELECT * FROM employees
+WHERE salary BETWEEN 30000 AND 70000
+AND department = 'Sales';
+```
+
+### Performance Considerations
+
+- **Indexes**: Using `BETWEEN` on indexed columns can improve query performance.
+- **Data Type Compatibility**: Ensure the data types of the column and the range values are compatible to avoid errors or unexpected results.
+- **Inclusive Nature**: Remember that the `BETWEEN` operator includes the start and end values in the result set.
+
+### Example Scenarios
+
+1. **Finding Records Within a Range of Dates**
+
+   To find all bookings made in the first quarter of 2023:
+
+   ```sql
+   SELECT * FROM bookings
+   WHERE booking_date BETWEEN '2023-01-01' AND '2023-03-31';
+   ```
+
+2. **Filtering Numeric Data Within a Range**
+
+   To find products priced between $10 and $50:
+
+   ```sql
+   SELECT * FROM products
+   WHERE price BETWEEN 10 AND 50;
+   ```
+
+3. **Filtering Text Data Within a Range**
+
+   To find employees with last names starting between 'A' and 'M':
+
+   ```sql
+   SELECT * FROM employees
+   WHERE last_name BETWEEN 'A' AND 'M';
+   ```
+
+The `BETWEEN` operator is a straightforward and efficient way to filter data within a specified range, making your SQL queries concise and readable.
+
+### SQL aliases
+
+SQL aliases are used to give a table or a column in a query a temporary name. Aliases make column names more readable and can simplify complex queries. They are especially useful when dealing with long or complex table and column names, or when joining multiple tables.
+
+### Syntax
+
+**Column Alias**
+
+```sql
+SELECT column_name AS alias_name
+FROM table_name;
+```
+
+**Table Alias**
+
+```sql
+SELECT column_name
+FROM table_name AS alias_name;
+```
+
+### Examples
+
+1. **Column Alias**
+
+   To make the output of a column more readable:
+
+   ```sql
+   SELECT first_name AS FirstName, last_name AS LastName
+   FROM employees;
+   ```
+
+   This query retrieves the `first_name` and `last_name` columns from the `employees` table and displays them as `FirstName` and `LastName`, respectively.
+
+2. **Table Alias**
+
+   To simplify table names in a query, especially when joining tables:
+
+   ```sql
+   SELECT e.first_name, e.last_name, d.department_name
+   FROM employees AS e
+   JOIN departments AS d ON e.department_id = d.department_id;
+   ```
+
+   In this query, `employees` is aliased as `e` and `departments` as `d`. This makes the query easier to read and write, especially when dealing with multiple joins or complex conditions.
+
+3. **Combining Column and Table Aliases**
+
+   ```sql
+   SELECT e.first_name AS FirstName, e.last_name AS LastName, d.department_name AS Department
+   FROM employees AS e
+   JOIN departments AS d ON e.department_id = d.department_id;
+   ```
+
+   This query combines both column and table aliases to make the query more readable and the result set more understandable.
+
+### Aliases Without the `AS` Keyword
+
+The `AS` keyword is optional when creating an alias. The following query is equivalent to the previous one:
+
+```sql
+SELECT e.first_name FirstName, e.last_name LastName, d.department_name Department
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id;
+```
+
+### Using Aliases in Aggregations and Calculations
+
+1. **Aggregations**
+
+   To use an alias with an aggregate function:
+
+   ```sql
+   SELECT department_id, COUNT(*) AS EmployeeCount
+   FROM employees
+   GROUP BY department_id;
+   ```
+
+   This query counts the number of employees in each department and labels the count as `EmployeeCount`.
+
+2. **Calculations**
+
+   To use an alias in a calculation:
+
+   ```sql
+   SELECT product_name, price, price * 0.1 AS Tax
+   FROM products;
+   ```
+
+   This query calculates 10% tax on the price of each product and labels the result as `Tax`.
+
+### Example Scenarios
+
+1. **Complex Queries with Joins**
+
+   To join multiple tables and simplify the query using aliases:
+
+   ```sql
+   SELECT o.order_id, c.customer_name, p.product_name, o.quantity
+   FROM orders o
+   JOIN customers c ON o.customer_id = c.customer_id
+   JOIN products p ON o.product_id = p.product_id;
+   ```
+
+2. **Subqueries with Aliases**
+
+   To use aliases in subqueries:
+
+   ```sql
+   SELECT e.first_name, e.last_name, dept.Department
+   FROM employees e
+   JOIN (SELECT department_id, department_name AS Department FROM departments) dept
+   ON e.department_id = dept.department_id;
+   ```
+
+### Best Practices
+
+- **Clarity**: Use aliases to make column and table names clearer and more meaningful.
+- **Consistency**: Be consistent in your use of aliases to improve readability and maintainability of your queries.
+- **Avoid Conflicts**: Ensure that alias names do not conflict with existing column or table names in your database.
+
+SQL aliases are powerful tools for simplifying and clarifying your queries, making them easier to write, read, and maintain.
+
+
+### SQL joins
+SQL joins are used to combine records from two or more tables based on a related column between them. Here is an overview of the different types of joins and their usage:
+
+### 1. INNER JOIN
+
+The `INNER JOIN` keyword selects records that have matching values in both tables.
+
+**Syntax:**
+```sql
+SELECT columns
+FROM table1
+INNER JOIN table2 ON table1.common_column = table2.common_column;
+```
+
+**Example:**
+```sql
+SELECT employees.first_name, employees.last_name, departments.department_name
+FROM employees
+INNER JOIN departments ON employees.department_id = departments.department_id;
+```
+This query retrieves employees' first and last names along with their corresponding department names, but only for those employees who have a department.
+
+### 2. LEFT (OUTER) JOIN
+
+The `LEFT JOIN` keyword returns all records from the left table (table1), and the matched records from the right table (table2). The result is NULL from the right side if there is no match.
+
+**Syntax:**
+```sql
+SELECT columns
+FROM table1
+LEFT JOIN table2 ON table1.common_column = table2.common_column;
+```
+
+**Example:**
+```sql
+SELECT employees.first_name, employees.last_name, departments.department_name
+FROM employees
+LEFT JOIN departments ON employees.department_id = departments.department_id;
+```
+This query retrieves all employees' first and last names, and their department names if available. For employees without a department, the department name will be NULL.
+
+### 3. RIGHT (OUTER) JOIN
+
+The `RIGHT JOIN` keyword returns all records from the right table (table2), and the matched records from the left table (table1). The result is NULL from the left side if there is no match.
+
+**Syntax:**
+```sql
+SELECT columns
+FROM table1
+RIGHT JOIN table2 ON table1.common_column = table2.common_column;
+```
+
+**Example:**
+```sql
+SELECT employees.first_name, employees.last_name, departments.department_name
+FROM employees
+RIGHT JOIN departments ON employees.department_id = departments.department_id;
+```
+This query retrieves all departments and the employees working in them. For departments without employees, the employee details will be NULL.
+
+### 4. FULL (OUTER) JOIN
+
+The `FULL JOIN` keyword returns all records when there is a match in either left (table1) or right (table2) table records. It returns NULL for non-matching rows from both tables.
+
+**Syntax:**
+```sql
+SELECT columns
+FROM table1
+FULL JOIN table2 ON table1.common_column = table2.common_column;
+```
+
+**Example:**
+```sql
+SELECT employees.first_name, employees.last_name, departments.department_name
+FROM employees
+FULL JOIN departments ON employees.department_id = departments.department_id;
+```
+
+This query retrieves all employees and departments, showing the employees with their departments, and including departments and employees with no matches.
+
+### 5. CROSS JOIN
+
+The `CROSS JOIN` keyword returns the Cartesian product of the two tables, meaning it returns all possible combinations of rows.
+
+**Syntax:**
+```sql
+SELECT columns
+FROM table1
+CROSS JOIN table2;
+```
+
+**Example:**
+```sql
+SELECT employees.first_name, departments.department_name
+FROM employees
+CROSS JOIN departments;
+```
+This query retrieves all combinations of employees' first names and department names.
+
+### 6. SELF JOIN
+
+A `SELF JOIN` is a regular join but the table is joined with itself.
+
+**Syntax:**
+```sql
+SELECT a.columns, b.columns
+FROM table a, table b
+WHERE condition;
+```
+
+**Example:**
+```sql
+SELECT a.employee_id, a.first_name AS EmployeeName, b.first_name AS ManagerName
+FROM employees a
+JOIN employees b ON a.manager_id = b.employee_id;
+```
+This query retrieves employees along with their manager's name by joining the `employees` table with itself.
+
+### Example Scenarios
+
+1. **INNER JOIN with Additional Conditions**
+   ```sql
+   SELECT employees.first_name, employees.last_name, departments.department_name
+   FROM employees
+   INNER JOIN departments ON employees.department_id = departments.department_id
+   WHERE employees.salary > 50000;
+   ```
+
+2. **LEFT JOIN with Aggregation**
+   ```sql
+   SELECT departments.department_name, COUNT(employees.employee_id) AS EmployeeCount
+   FROM departments
+   LEFT JOIN employees ON departments.department_id = employees.department_id
+   GROUP BY departments.department_name;
+   ```
+
+3. **RIGHT JOIN with Filtering**
+   ```sql
+   SELECT employees.first_name, employees.last_name, departments.department_name
+   FROM employees
+   RIGHT JOIN departments ON employees.department_id = departments.department_id
+   WHERE departments.location = 'New York';
+   ```
+
+4. **FULL JOIN with Null Handling**
+   ```sql
+   SELECT COALESCE(employees.first_name, 'No Employee') AS EmployeeName,
+          COALESCE(departments.department_name, 'No Department') AS DepartmentName
+   FROM employees
+   FULL JOIN departments ON employees.department_id = departments.department_id;
+   ```
+
+### Best Practices
+
+- **Understand Join Types**: Choose the appropriate join type based on the relationship and desired result.
+- **Use Aliases**: Use table aliases for readability and to avoid column name conflicts.
+- **Performance**: Be mindful of performance, especially with large datasets and complex joins. Indexing can improve join performance.
+
+By understanding and using these join types appropriately, you can effectively query and analyze data across multiple related tables in your database.
+
+
+### `GROUP BY` Statement
+
+The `GROUP BY` statement in SQL is used to arrange identical data into groups. It is often used with aggregate functions (`COUNT`, `MAX`, `MIN`, `SUM`, `AVG`) to perform operations on each group of data.
+
+### Syntax
+
+```sql
+SELECT column1, aggregate_function(column2)
+FROM table_name
+WHERE condition
+GROUP BY column1, column3, ...;
+```
+
+### Examples
+
+1. **Basic Usage**
+
+   To find the number of employees in each department:
+
+   ```sql
+   SELECT department_id, COUNT(employee_id) AS NumberOfEmployees
+   FROM employees
+   GROUP BY department_id;
+   ```
+
+   This query groups the employees by `department_id` and counts the number of employees in each department.
+
+2. **Using Multiple Columns**
+
+   To find the number of employees in each department and each job title:
+
+   ```sql
+   SELECT department_id, job_title, COUNT(employee_id) AS NumberOfEmployees
+   FROM employees
+   GROUP BY department_id, job_title;
+   ```
+
+   This query groups the employees by both `department_id` and `job_title`, and counts the number of employees in each combination.
+
+3. **With Aggregate Functions**
+
+   To find the average salary in each department:
+
+   ```sql
+   SELECT department_id, AVG(salary) AS AverageSalary
+   FROM employees
+   GROUP BY department_id;
+   ```
+
+   This query groups the employees by `department_id` and calculates the average salary in each department.
+
+4. **Using `HAVING` Clause**
+
+   The `HAVING` clause is used to filter groups based on a condition, similar to how the `WHERE` clause is used to filter rows.
+
+   To find departments with more than 10 employees:
+
+   ```sql
+   SELECT department_id, COUNT(employee_id) AS NumberOfEmployees
+   FROM employees
+   GROUP BY department_id
+   HAVING COUNT(employee_id) > 10;
+   ```
+
+   This query groups the employees by `department_id` and only includes departments with more than 10 employees.
+
+### Example Scenarios
+
+1. **Summarizing Sales by Product**
+
+   To find the total sales amount for each product:
+
+   ```sql
+   SELECT product_id, SUM(sales_amount) AS TotalSales
+   FROM sales
+   GROUP BY product_id;
+   ```
+
+2. **Counting Customers by City**
+
+   To find the number of customers in each city:
+
+   ```sql
+   SELECT city, COUNT(customer_id) AS NumberOfCustomers
+   FROM customers
+   GROUP BY city;
+   ```
+
+3. **Finding Maximum Salary by Department**
+
+   To find the highest salary in each department:
+
+   ```sql
+   SELECT department_id, MAX(salary) AS MaxSalary
+   FROM employees
+   GROUP BY department_id;
+   ```
+
+4. **Filtering Groups with `HAVING` Clause**
+
+   To find departments where the average salary is greater than 60,000:
+
+   ```sql
+   SELECT department_id, AVG(salary) AS AverageSalary
+   FROM employees
+   GROUP BY department_id
+   HAVING AVG(salary) > 60000;
+   ```
+
+### Important Points
+
+- **Grouping Columns**: All columns in the `SELECT` statement that are not used within an aggregate function must be included in the `GROUP BY` clause.
+- **`HAVING` vs. `WHERE`**: The `WHERE` clause filters rows before grouping, while the `HAVING` clause filters groups after grouping.
+- **Performance**: Grouping large datasets can be resource-intensive. Proper indexing can help improve performance.
+
+### Complex Example
+
+To find the total sales amount for each product category and the average sales amount for categories with total sales greater than 50,000:
+
+```sql
+SELECT product_category, SUM(sales_amount) AS TotalSales, AVG(sales_amount) AS AverageSales
+FROM sales
+GROUP BY product_category
+HAVING SUM(sales_amount) > 50000;
+```
+
+This query groups the sales data by `product_category`, calculates the total and average sales amount for each category, and only includes categories where the total sales amount is greater than 50,000.
+
+The `GROUP BY` statement is essential for summarizing and aggregating data in SQL, making it a powerful tool for data analysis and reporting.
+
+### `HAVING` clause
+
+The `HAVING` clause in SQL is used to filter groups of data created by the `GROUP BY` clause. It is similar to the `WHERE` clause, but the `WHERE` clause is used to filter rows before grouping, while the `HAVING` clause is used to filter groups after grouping. The `HAVING` clause is often used with aggregate functions.
+
+### Syntax
+
+```sql
+SELECT column1, aggregate_function(column2)
+FROM table_name
+WHERE condition
+GROUP BY column1
+HAVING aggregate_function(column2) condition;
+```
+
+### Examples
+
+1. **Basic Usage**
+
+   To find departments with more than 10 employees:
+
+   ```sql
+   SELECT department_id, COUNT(employee_id) AS NumberOfEmployees
+   FROM employees
+   GROUP BY department_id
+   HAVING COUNT(employee_id) > 10;
+   ```
+
+   This query groups the employees by `department_id` and includes only those departments with more than 10 employees.
+
+2. **Using Multiple Aggregate Functions**
+
+   To find departments where the total salary is greater than 100,000 and the average salary is greater than 30,000:
+
+   ```sql
+   SELECT department_id, SUM(salary) AS TotalSalary, AVG(salary) AS AverageSalary
+   FROM employees
+   GROUP BY department_id
+   HAVING SUM(salary) > 100000 AND AVG(salary) > 30000;
+   ```
+
+   This query groups the employees by `department_id` and includes only those departments where the total salary exceeds 100,000 and the average salary exceeds 30,000.
+
+3. **Using `HAVING` with `GROUP BY` and `ORDER BY`**
+
+   To find the top 3 departments with the highest average salary, where the average salary is above 50,000:
+
+   ```sql
+   SELECT department_id, AVG(salary) AS AverageSalary
+   FROM employees
+   GROUP BY department_id
+   HAVING AVG(salary) > 50000
+   ORDER BY AverageSalary DESC
+   LIMIT 3;
+   ```
+
+   This query groups the employees by `department_id`, filters out departments with an average salary of 50,000 or less, and then orders the result by average salary in descending order, returning only the top 3 departments.
+
+### Example Scenarios
+
+1. **Filtering Groups with Aggregated Data**
+
+   To find products with total sales above 500 units:
+
+   ```sql
+   SELECT product_id, SUM(quantity) AS TotalSales
+   FROM sales
+   GROUP BY product_id
+   HAVING SUM(quantity) > 500;
+   ```
+
+2. **Combining `HAVING` with `WHERE`**
+
+   To find customers who have placed more than 5 orders and have a total spending of more than 1000:
+
+   ```sql
+   SELECT customer_id, COUNT(order_id) AS NumberOfOrders, SUM(total_amount) AS TotalSpending
+   FROM orders
+   WHERE order_status = 'completed'
+   GROUP BY customer_id
+   HAVING COUNT(order_id) > 5 AND SUM(total_amount) > 1000;
+   ```
+
+   This query first filters completed orders with the `WHERE` clause, then groups the results by `customer_id`, and finally applies the `HAVING` clause to include only those customers who meet both conditions.
+
+3. **Using `HAVING` with Non-Aggregate Columns**
+
+   To find employees in specific departments who have a total salary greater than 200,000:
+
+   ```sql
+   SELECT department_id, job_title, SUM(salary) AS TotalSalary
+   FROM employees
+   WHERE department_id IN (1, 2, 3)
+   GROUP BY department_id, job_title
+   HAVING SUM(salary) > 200000;
+   ```
+
+   This query filters employees in departments 1, 2, and 3, groups them by `department_id` and `job_title`, and includes only those groups where the total salary exceeds 200,000.
+
+### Important Points
+
+- **Order of Execution**: The `HAVING` clause is evaluated after the `GROUP BY` clause but before the `ORDER BY` clause.
+- **Aggregate Functions**: The `HAVING` clause typically includes aggregate functions like `COUNT`, `SUM`, `AVG`, `MAX`, `MIN`.
+- **Combining with `WHERE`**: Use the `WHERE` clause to filter rows before grouping and the `HAVING` clause to filter groups after grouping.
+
+### Complex Example
+
+To find the average and total sales amount for each product category and include only those categories with total sales greater than 50,000, ordering the result by average sales in descending order:
+
+```sql
+SELECT product_category, AVG(sales_amount) AS AverageSales, SUM(sales_amount) AS TotalSales
+FROM sales
+GROUP BY product_category
+HAVING SUM(sales_amount) > 50000
+ORDER BY AverageSales DESC;
+```
+
+This query groups the sales data by `product_category`, calculates the average and total sales amount for each category, filters out categories with total sales of 50,000 or less, and orders the result by average sales in descending order.
+
+The `HAVING` clause is a powerful tool for filtering groups of data in SQL, allowing you to perform more detailed and specific data analysis.
+
+
+The `HAVING` clause in SQL is used to filter groups of data created by the `GROUP BY` clause. It is similar to the `WHERE` clause, but the `WHERE` clause is used to filter rows before grouping, while the `HAVING` clause is used to filter groups after grouping. The `HAVING` clause is often used with aggregate functions.
+
+### Syntax
+
+```sql
+SELECT column1, aggregate_function(column2)
+FROM table_name
+WHERE condition
+GROUP BY column1
+HAVING aggregate_function(column2) condition;
+```
+
+### Examples
+
+1. **Basic Usage**
+
+   To find departments with more than 10 employees:
+
+   ```sql
+   SELECT department_id, COUNT(employee_id) AS NumberOfEmployees
+   FROM employees
+   GROUP BY department_id
+   HAVING COUNT(employee_id) > 10;
+   ```
+
+   This query groups the employees by `department_id` and includes only those departments with more than 10 employees.
+
+2. **Using Multiple Aggregate Functions**
+
+   To find departments where the total salary is greater than 100,000 and the average salary is greater than 30,000:
+
+   ```sql
+   SELECT department_id, SUM(salary) AS TotalSalary, AVG(salary) AS AverageSalary
+   FROM employees
+   GROUP BY department_id
+   HAVING SUM(salary) > 100000 AND AVG(salary) > 30000;
+   ```
+
+   This query groups the employees by `department_id` and includes only those departments where the total salary exceeds 100,000 and the average salary exceeds 30,000.
+
+3. **Using `HAVING` with `GROUP BY` and `ORDER BY`**
+
+   To find the top 3 departments with the highest average salary, where the average salary is above 50,000:
+
+   ```sql
+   SELECT department_id, AVG(salary) AS AverageSalary
+   FROM employees
+   GROUP BY department_id
+   HAVING AVG(salary) > 50000
+   ORDER BY AverageSalary DESC
+   LIMIT 3;
+   ```
+
+   This query groups the employees by `department_id`, filters out departments with an average salary of 50,000 or less, and then orders the result by average salary in descending order, returning only the top 3 departments.
+
+### Example Scenarios
+
+1. **Filtering Groups with Aggregated Data**
+
+   To find products with total sales above 500 units:
+
+   ```sql
+   SELECT product_id, SUM(quantity) AS TotalSales
+   FROM sales
+   GROUP BY product_id
+   HAVING SUM(quantity) > 500;
+   ```
+
+2. **Combining `HAVING` with `WHERE`**
+
+   To find customers who have placed more than 5 orders and have a total spending of more than 1000:
+
+   ```sql
+   SELECT customer_id, COUNT(order_id) AS NumberOfOrders, SUM(total_amount) AS TotalSpending
+   FROM orders
+   WHERE order_status = 'completed'
+   GROUP BY customer_id
+   HAVING COUNT(order_id) > 5 AND SUM(total_amount) > 1000;
+   ```
+
+   This query first filters completed orders with the `WHERE` clause, then groups the results by `customer_id`, and finally applies the `HAVING` clause to include only those customers who meet both conditions.
+
+3. **Using `HAVING` with Non-Aggregate Columns**
+
+   To find employees in specific departments who have a total salary greater than 200,000:
+
+   ```sql
+   SELECT department_id, job_title, SUM(salary) AS TotalSalary
+   FROM employees
+   WHERE department_id IN (1, 2, 3)
+   GROUP BY department_id, job_title
+   HAVING SUM(salary) > 200000;
+   ```
+
+   This query filters employees in departments 1, 2, and 3, groups them by `department_id` and `job_title`, and includes only those groups where the total salary exceeds 200,000.
+
+### Important Points
+
+- **Order of Execution**: The `HAVING` clause is evaluated after the `GROUP BY` clause but before the `ORDER BY` clause.
+- **Aggregate Functions**: The `HAVING` clause typically includes aggregate functions like `COUNT`, `SUM`, `AVG`, `MAX`, `MIN`.
+- **Combining with `WHERE`**: Use the `WHERE` clause to filter rows before grouping and the `HAVING` clause to filter groups after grouping.
+
+### Complex Example
+
+To find the average and total sales amount for each product category and include only those categories with total sales greater than 50,000, ordering the result by average sales in descending order:
+
+```sql
+SELECT product_category, AVG(sales_amount) AS AverageSales, SUM(sales_amount) AS TotalSales
+FROM sales
+GROUP BY product_category
+HAVING SUM(sales_amount) > 50000
+ORDER BY AverageSales DESC;
+```
+
+This query groups the sales data by `product_category`, calculates the average and total sales amount for each category, filters out categories with total sales of 50,000 or less, and orders the result by average sales in descending order.
+
+The `HAVING` clause is a powerful tool for filtering groups of data in SQL, allowing you to perform more detailed and specific data analysis.
+
+
+### `EXISTS` operator
+
+The `EXISTS` operator in SQL is used to check the presence of rows in a subquery. It returns `TRUE` if the subquery returns one or more records, and `FALSE` otherwise. The `EXISTS` operator is commonly used to perform conditional checks within queries, often to determine if certain related records exist in another table.
+
+### Syntax
+
+```sql
+SELECT column_name(s)
+FROM table_name
+WHERE EXISTS (subquery);
+```
+
+### Examples
+
+#### 1. Basic Usage
+
+To find employees who belong to a department:
+
+```sql
+SELECT employee_id, first_name, last_name
+FROM employees e
+WHERE EXISTS (
+    SELECT 1
+    FROM departments d
+    WHERE e.department_id = d.department_id
+);
+```
+
+This query retrieves employees who have a corresponding department in the `departments` table.
+
+#### 2. Using `EXISTS` with Subqueries
+
+To find customers who have placed orders:
+
+```sql
+SELECT customer_id, customer_name
+FROM customers c
+WHERE EXISTS (
+    SELECT 1
+    FROM orders o
+    WHERE c.customer_id = o.customer_id
+);
+```
+
+This query retrieves customers who have at least one order in the `orders` table.
+
+#### 3. Using `NOT EXISTS`
+
+To find employees who do not belong to any department:
+
+```sql
+SELECT employee_id, first_name, last_name
+FROM employees e
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM departments d
+    WHERE e.department_id = d.department_id
+);
+```
+
+This query retrieves employees who do not have a corresponding department in the `departments` table.
+
+### Example Scenarios
+
+#### 1. Filtering with Conditions
+
+To find products that have never been sold:
+
+```sql
+SELECT product_id, product_name
+FROM products p
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM sales s
+    WHERE p.product_id = s.product_id
+);
+```
+
+#### 2. Combining `EXISTS` with `JOIN`
+
+To find employees who have a manager in the same department:
+
+```sql
+SELECT e1.employee_id, e1.first_name, e1.last_name
+FROM employees e1
+WHERE EXISTS (
+    SELECT 1
+    FROM employees e2
+    WHERE e1.manager_id = e2.employee_id
+    AND e1.department_id = e2.department_id
+);
+```
+
+#### 3. Using `EXISTS` in Update Statements
+
+To give a salary raise to employees who have completed at least one project:
+
+```sql
+UPDATE employees e
+SET salary = salary * 1.1
+WHERE EXISTS (
+    SELECT 1
+    FROM projects p
+    WHERE e.employee_id = p.employee_id
+);
+```
+
+#### 4. Using `EXISTS` with Aggregation
+
+To find departments with more than 10 employees:
+
+```sql
+SELECT department_id, department_name
+FROM departments d
+WHERE EXISTS (
+    SELECT 1
+    FROM employees e
+    WHERE e.department_id = d.department_id
+    GROUP BY e.department_id
+    HAVING COUNT(e.employee_id) > 10
+);
+```
+
+### Important Points
+
+- **Performance**: The `EXISTS` operator can be more efficient than `IN` for subqueries with large result sets because `EXISTS` can short-circuit once a match is found.
+- **Return Value**: The subquery within `EXISTS` usually returns `1` or `NULL`, but the actual returned value is irrelevant. The existence of any row is what determines the `TRUE` or `FALSE` result.
+- **Use Case**: `EXISTS` is typically used when checking for the existence of rows that meet certain conditions in a related table.
+
+### Complex Example
+
+To find employees who have been assigned to at least one project and have a salary greater than 60,000:
+
+```sql
+SELECT employee_id, first_name, last_name, salary
+FROM employees e
+WHERE EXISTS (
+    SELECT 1
+    FROM projects p
+    WHERE e.employee_id = p.employee_id
+)
+AND salary > 60000;
+```
+
+This query first checks if an employee is assigned to any project using the `EXISTS` operator and then filters the results to include only those employees with a salary greater than 60,000.
+
+The `EXISTS` operator is a powerful tool for checking the existence of records in a subquery, allowing for efficient and flexible data retrieval based on complex conditions.
+
+
+### `ANY` and `ALL` operators
+In SQL, the `ANY` and `ALL` operators are used with subqueries to compare a value to a set of values returned by the subquery.
+
+### The `ANY` Operator
+
+The `ANY` operator returns `TRUE` if any of the subquery values satisfy the condition. It allows a comparison to a range of values and can be used with various comparison operators such as `=`, `>`, `<`, `>=`, `<=`, and `<>`.
+
+#### Syntax
+
+```sql
+SELECT column_name(s)
+FROM table_name
+WHERE column_name comparison_operator ANY (subquery);
+```
+
+#### Example
+
+To find employees who earn more than the salary of at least one employee in department 10:
+
+```sql
+SELECT employee_id, first_name, salary
+FROM employees
+WHERE salary > ANY (
+    SELECT salary
+    FROM employees
+    WHERE department_id = 10
+);
+```
+
+### The `ALL` Operator
+
+The `ALL` operator returns `TRUE` if all of the subquery values satisfy the condition. It also allows a comparison to a range of values but ensures that the condition is true for every value returned by the subquery.
+
+#### Syntax
+
+```sql
+SELECT column_name(s)
+FROM table_name
+WHERE column_name comparison_operator ALL (subquery);
+```
+
+#### Example
+
+To find employees who earn more than all employees in department 20:
+
+```sql
+SELECT employee_id, first_name, salary
+FROM employees
+WHERE salary > ALL (
+    SELECT salary
+    FROM employees
+    WHERE department_id = 20
+);
+```
+
+### Example Scenarios
+
+#### 1. Using `ANY` with Different Comparison Operators
+
+To find products with a price less than any product in category 5:
+
+```sql
+SELECT product_id, product_name, price
+FROM products
+WHERE price < ANY (
+    SELECT price
+    FROM products
+    WHERE category_id = 5
+);
+```
+
+#### 2. Combining `ANY` with Aggregates
+
+To find employees who have made sales greater than the average sale amount of any employee:
+
+```sql
+SELECT employee_id, first_name, total_sales
+FROM employees
+WHERE total_sales > ANY (
+    SELECT AVG(total_sales)
+    FROM employees
+    GROUP BY department_id
+);
+```
+
+#### 3. Using `ALL` with Different Comparison Operators
+
+To find products with a price greater than all products in category 3:
+
+```sql
+SELECT product_id, product_name, price
+FROM products
+WHERE price > ALL (
+    SELECT price
+    FROM products
+    WHERE category_id = 3
+);
+```
+
+#### 4. Combining `ALL` with Aggregates
+
+To find employees whose salary is above the maximum salary in all other departments:
+
+```sql
+SELECT employee_id, first_name, salary
+FROM employees e1
+WHERE salary > ALL (
+    SELECT MAX(salary)
+    FROM employees e2
+    WHERE e1.department_id <> e2.department_id
+    GROUP BY department_id
+);
+```
+
+### Important Points
+
+- **Comparison with Subqueries**: `ANY` and `ALL` are typically used with subqueries to perform comparisons with a list of values.
+- **Operators**: Can be used with various comparison operators to compare a column's value against multiple values returned by a subquery.
+- **Efficiency**: The efficiency of queries using `ANY` and `ALL` can vary depending on the size and complexity of the subqueries. Proper indexing and query optimization techniques are recommended.
+
+### Complex Example
+
+To find employees who have a salary greater than the highest salary in any other department:
+
+```sql
+SELECT employee_id, first_name, salary
+FROM employees e
+WHERE salary > ANY (
+    SELECT MAX(salary)
+    FROM employees
+    WHERE department_id <> e.department_id
+    GROUP BY department_id
+);
+```
+
+This query retrieves employees whose salary is greater than the highest salary of employees in any other department. It uses the `ANY` operator to compare the salary against the maximum salaries of all other departments.
+
+By using `ANY` and `ALL` operators, you can perform more flexible and powerful comparisons in SQL, enabling complex data retrieval and analysis.
+
+
+### `SELECT INTO` statement
+
+The `SELECT INTO` statement in SQL is used to copy data from one table into a new table. The new table will be created with the same structure as the source table, including the data types of the columns. This statement is often used for creating backup copies of tables or for archiving data.
+
+### Syntax
+
+```sql
+SELECT column1, column2, ...
+INTO new_table
+FROM existing_table
+WHERE condition;
+```
+
+### Example Usage
+
+1. **Copying All Data from a Table**
+
+   To create a backup of the `employees` table:
+
+   ```sql
+   SELECT *
+   INTO employees_backup
+   FROM employees;
+   ```
+
+   This query creates a new table `employees_backup` with the same structure and data as the `employees` table.
+
+2. **Copying Specific Columns**
+
+   To copy only the `employee_id` and `first_name` columns from the `employees` table:
+
+   ```sql
+   SELECT employee_id, first_name
+   INTO employees_backup
+   FROM employees;
+   ```
+
+   This query creates a new table `employees_backup` with only the `employee_id` and `first_name` columns.
+
+3. **Copying Data with a Condition**
+
+   To copy only the employees who belong to department 10:
+
+   ```sql
+   SELECT employee_id, first_name, last_name
+   INTO department_10_employees
+   FROM employees
+   WHERE department_id = 10;
+   ```
+
+   This query creates a new table `department_10_employees` containing only the employees from department 10.
+
+4. **Copying Data with a Join**
+
+   To create a new table that includes employee names and their corresponding department names:
+
+   ```sql
+   SELECT e.employee_id, e.first_name, e.last_name, d.department_name
+   INTO employees_with_departments
+   FROM employees e
+   JOIN departments d ON e.department_id = d.department_id;
+   ```
+
+   This query creates a new table `employees_with_departments` containing employee details along with their department names.
+
+### Important Points
+
+- **Table Creation**: The `SELECT INTO` statement creates the new table automatically. If a table with the same name already exists, the query will fail.
+- **Column Types**: The new table will have the same column data types as those in the original table.
+- **Indexes and Constraints**: The new table will not inherit indexes, primary keys, or constraints from the original table. These need to be added separately if required.
+- **Database Support**: The `SELECT INTO` statement is supported by many relational database management systems (RDBMS) like SQL Server and PostgreSQL, but not by some others like MySQL (which uses `CREATE TABLE ... AS SELECT` instead).
+
+### Using `CREATE TABLE AS` in MySQL
+
+MySQL does not support the `SELECT INTO` statement directly. Instead, you can use the `CREATE TABLE AS` statement.
+
+```sql
+CREATE TABLE new_table AS
+SELECT column1, column2, ...
+FROM existing_table
+WHERE condition;
+```
+
+#### Example in MySQL
+
+To create a backup of the `employees` table in MySQL:
+
+```sql
+CREATE TABLE employees_backup AS
+SELECT *
+FROM employees;
+```
+
+### Complex Example
+
+To create a new table that includes the top 5 highest-paid employees along with their department names:
+
+```sql
+SELECT e.employee_id, e.first_name, e.last_name, e.salary, d.department_name
+INTO top_5_highest_paid_employees
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+ORDER BY e.salary DESC
+LIMIT 5;
+```
+
+This query creates a new table `top_5_highest_paid_employees` containing details of the top 5 highest-paid employees along with their department names.
+
+### Conclusion
+
+The `SELECT INTO` statement is a powerful tool for copying data into a new table with ease. Whether you are creating backups, archiving data, or generating summary tables, `SELECT INTO` provides a straightforward and efficient way to duplicate data.
+
+
+### `INSERT INTO SELECT` statement
+
+The `INSERT INTO SELECT` statement in SQL is used to copy data from one table and insert it into another existing table. This is particularly useful for transferring data between tables, copying data for backups, or populating tables with related data.
+
+### Syntax
+
+```sql
+INSERT INTO target_table (column1, column2, ...)
+SELECT column1, column2, ...
+FROM source_table
+WHERE condition;
+```
+
+### Example Usage
+
+#### 1. Basic Example: Copying Data
+
+To copy all data from `source_table` to `target_table`:
+
+```sql
+INSERT INTO target_table
+SELECT *
+FROM source_table;
+```
+
+#### 2. Copying Specific Columns
+
+To copy only specific columns from `source_table` to `target_table`:
+
+```sql
+INSERT INTO target_table (column1, column2)
+SELECT column1, column2
+FROM source_table;
+```
+
+#### 3. Copying Data with a Condition
+
+To copy only certain rows from `source_table` to `target_table` based on a condition:
+
+```sql
+INSERT INTO target_table (column1, column2)
+SELECT column1, column2
+FROM source_table
+WHERE condition;
+```
+
+For example, to copy employees from `employees` table to `target_employees` table who belong to department 10:
+
+```sql
+INSERT INTO target_employees (employee_id, first_name, last_name)
+SELECT employee_id, first_name, last_name
+FROM employees
+WHERE department_id = 10;
+```
+
+#### 4. Combining Data from Multiple Tables
+
+To copy and combine data from multiple tables into `target_table` using a join:
+
+```sql
+INSERT INTO target_table (column1, column2, column3)
+SELECT a.column1, b.column2, c.column3
+FROM table1 a
+JOIN table2 b ON a.common_field = b.common_field
+JOIN table3 c ON b.other_common_field = c.other_common_field
+WHERE condition;
+```
+
+### Example Scenarios
+
+#### 1. Copying Data with Transformation
+
+To insert data into `target_table` with some transformations applied:
+
+```sql
+INSERT INTO target_table (column1, column2, column3)
+SELECT column1, column2, column3 * 1.1
+FROM source_table;
+```
+
+#### 2. Inserting Data with Aggregation
+
+To copy aggregated data from `source_table` to `target_table`:
+
+```sql
+INSERT INTO target_table (department_id, total_salary)
+SELECT department_id, SUM(salary)
+FROM source_table
+GROUP BY department_id;
+```
+
+#### 3. Using Subqueries
+
+To insert data based on the result of a subquery:
+
+```sql
+INSERT INTO target_table (column1, column2)
+SELECT column1, column2
+FROM source_table
+WHERE column3 IN (SELECT column3 FROM another_table WHERE condition);
+```
+
+### Important Points
+
+- **Table Structure**: The target table must already exist and have a structure compatible with the columns being inserted.
+- **Column Count**: The number of columns in the `INSERT INTO` clause must match the number of columns in the `SELECT` clause.
+- **Data Types**: The data types of the selected columns must be compatible with the data types of the columns in the target table.
+- **Constraints and Indexes**: If the target table has constraints (e.g., primary keys, foreign keys) or indexes, ensure that the data being inserted complies with these constraints to avoid errors.
+
+### Complex Example
+
+To insert data from `employees` table into `high_earning_employees` table for employees who earn more than the average salary, along with the department name:
+
+```sql
+INSERT INTO high_earning_employees (employee_id, first_name, last_name, salary, department_name)
+SELECT e.employee_id, e.first_name, e.last_name, e.salary, d.department_name
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+WHERE e.salary > (SELECT AVG(salary) FROM employees);
+```
+
+This query inserts data into `high_earning_employees` table, including only those employees whose salary is above the average salary, and it also includes the department name.
+
+### Conclusion
+
+The `INSERT INTO SELECT` statement is a powerful tool for copying and transforming data between tables. It allows you to efficiently transfer data while applying conditions, transformations, and aggregations as needed. This capability is essential for data migration, backup, and data warehousing tasks in database management.
+
+
+### `CASE` expression
+
+The `CASE` expression in SQL is a versatile conditional statement that allows you to return different values based on different conditions. It is similar to an `if-else` statement in programming languages and can be used in various parts of SQL queries, such as `SELECT`, `UPDATE`, `INSERT`, and `ORDER BY` clauses.
+
+### Syntax
+
+There are two forms of the `CASE` expression: the simple `CASE` expression and the searched `CASE` expression.
+
+#### 1. Simple `CASE` Expression
+
+The simple `CASE` expression compares an expression to a set of simple expressions to determine the result.
+
+```sql
+CASE expression
+    WHEN value1 THEN result1
+    WHEN value2 THEN result2
+    ...
+    ELSE resultN
+END
+```
+
+#### 2. Searched `CASE` Expression
+
+The searched `CASE` expression evaluates a set of Boolean expressions to determine the result.
+
+```sql
+CASE
+    WHEN condition1 THEN result1
+    WHEN condition2 THEN result2
+    ...
+    ELSE resultN
+END
+```
+
+### Examples
+
+#### 1. Simple `CASE` Expression
+
+To assign a grade based on a numerical score:
+
+```sql
+SELECT student_id, 
+       score,
+       CASE score
+           WHEN 100 THEN 'A+'
+           WHEN 90 THEN 'A'
+           WHEN 80 THEN 'B'
+           WHEN 70 THEN 'C'
+           ELSE 'F'
+       END AS grade
+FROM students;
+```
+
+#### 2. Searched `CASE` Expression
+
+To categorize employees based on their salary:
+
+```sql
+SELECT employee_id, 
+       salary,
+       CASE 
+           WHEN salary > 100000 THEN 'High'
+           WHEN salary BETWEEN 50000 AND 100000 THEN 'Medium'
+           ELSE 'Low'
+       END AS salary_category
+FROM employees;
+```
+
+#### 3. Using `CASE` in `ORDER BY`
+
+To sort products based on their availability and price:
+
+```sql
+SELECT product_id, product_name, stock_quantity, price
+FROM products
+ORDER BY 
+    CASE 
+        WHEN stock_quantity = 0 THEN 1
+        ELSE 0
+    END,
+    price DESC;
+```
+
+This query sorts products, placing out-of-stock items at the end, and then sorts by price in descending order.
+
+#### 4. Using `CASE` in `UPDATE`
+
+To give a salary raise based on the current salary:
+
+```sql
+UPDATE employees
+SET salary = 
+    CASE 
+        WHEN salary < 50000 THEN salary * 1.10
+        WHEN salary BETWEEN 50000 AND 100000 THEN salary * 1.05
+        ELSE salary * 1.02
+    END;
+```
+
+#### 5. Using `CASE` in `WHERE`
+
+To filter records based on conditional logic:
+
+```sql
+SELECT employee_id, first_name, last_name, department_id
+FROM employees
+WHERE 
+    CASE 
+        WHEN department_id = 10 THEN 1
+        WHEN department_id = 20 THEN 1
+        ELSE 0
+    END = 1;
+```
+
+### Complex Example
+
+To create a report categorizing employees' performance based on their sales and rating:
+
+```sql
+SELECT employee_id, first_name, last_name, sales, rating,
+       CASE 
+           WHEN sales > 100000 AND rating = 'Excellent' THEN 'Outstanding'
+           WHEN sales > 75000 AND rating IN ('Excellent', 'Good') THEN 'Very Good'
+           WHEN sales > 50000 THEN 'Good'
+           ELSE 'Needs Improvement'
+       END AS performance_category
+FROM employees;
+```
+
+This query categorizes employees into different performance categories based on their sales and ratings.
+
+### Important Points
+
+- **NULL Handling**: The `CASE` expression can handle `NULL` values, and specific conditions can be included to deal with `NULL`s.
+- **Data Type Consistency**: All result expressions in the `CASE` statement should return the same data type.
+- **Execution Flow**: The `CASE` expression stops evaluating conditions once it finds the first condition that is `TRUE`.
+
+The `CASE` expression is a powerful tool in SQL for implementing complex conditional logic within your queries. It enhances the flexibility and readability of SQL statements, enabling sophisticated data manipulation and analysis.
+
+
+
+### `CASE` Expression
+
+The `CASE` expression in SQL is a versatile conditional statement that allows you to return different values based on different conditions. It is similar to an `if-else` statement in programming languages and can be used in various parts of SQL queries, such as `SELECT`, `UPDATE`, `INSERT`, and `ORDER BY` clauses.
+
+### Syntax
+
+There are two forms of the `CASE` expression: the simple `CASE` expression and the searched `CASE` expression.
+
+#### 1. Simple `CASE` Expression
+
+The simple `CASE` expression compares an expression to a set of simple expressions to determine the result.
+
+```sql
+CASE expression
+    WHEN value1 THEN result1
+    WHEN value2 THEN result2
+    ...
+    ELSE resultN
+END
+```
+
+#### 2. Searched `CASE` Expression
+
+The searched `CASE` expression evaluates a set of Boolean expressions to determine the result.
+
+```sql
+CASE
+    WHEN condition1 THEN result1
+    WHEN condition2 THEN result2
+    ...
+    ELSE resultN
+END
+```
+
+### Examples
+
+#### 1. Simple `CASE` Expression
+
+To assign a grade based on a numerical score:
+
+```sql
+SELECT student_id, 
+       score,
+       CASE score
+           WHEN 100 THEN 'A+'
+           WHEN 90 THEN 'A'
+           WHEN 80 THEN 'B'
+           WHEN 70 THEN 'C'
+           ELSE 'F'
+       END AS grade
+FROM students;
+```
+
+#### 2. Searched `CASE` Expression
+
+To categorize employees based on their salary:
+
+```sql
+SELECT employee_id, 
+       salary,
+       CASE 
+           WHEN salary > 100000 THEN 'High'
+           WHEN salary BETWEEN 50000 AND 100000 THEN 'Medium'
+           ELSE 'Low'
+       END AS salary_category
+FROM employees;
+```
+
+#### 3. Using `CASE` in `ORDER BY`
+
+To sort products based on their availability and price:
+
+```sql
+SELECT product_id, product_name, stock_quantity, price
+FROM products
+ORDER BY 
+    CASE 
+        WHEN stock_quantity = 0 THEN 1
+        ELSE 0
+    END,
+    price DESC;
+```
+
+This query sorts products, placing out-of-stock items at the end, and then sorts by price in descending order.
+
+#### 4. Using `CASE` in `UPDATE`
+
+To give a salary raise based on the current salary:
+
+```sql
+UPDATE employees
+SET salary = 
+    CASE 
+        WHEN salary < 50000 THEN salary * 1.10
+        WHEN salary BETWEEN 50000 AND 100000 THEN salary * 1.05
+        ELSE salary * 1.02
+    END;
+```
+
+#### 5. Using `CASE` in `WHERE`
+
+To filter records based on conditional logic:
+
+```sql
+SELECT employee_id, first_name, last_name, department_id
+FROM employees
+WHERE 
+    CASE 
+        WHEN department_id = 10 THEN 1
+        WHEN department_id = 20 THEN 1
+        ELSE 0
+    END = 1;
+```
+
+### Complex Example
+
+To create a report categorizing employees' performance based on their sales and rating:
+
+```sql
+SELECT employee_id, first_name, last_name, sales, rating,
+       CASE 
+           WHEN sales > 100000 AND rating = 'Excellent' THEN 'Outstanding'
+           WHEN sales > 75000 AND rating IN ('Excellent', 'Good') THEN 'Very Good'
+           WHEN sales > 50000 THEN 'Good'
+           ELSE 'Needs Improvement'
+       END AS performance_category
+FROM employees;
+```
+
+This query categorizes employees into different performance categories based on their sales and ratings.
+
+### Important Points
+
+- **NULL Handling**: The `CASE` expression can handle `NULL` values, and specific conditions can be included to deal with `NULL`s.
+- **Data Type Consistency**: All result expressions in the `CASE` statement should return the same data type.
+- **Execution Flow**: The `CASE` expression stops evaluating conditions once it finds the first condition that is `TRUE`.
+
+The `CASE` expression is a powerful tool in SQL for implementing complex conditional logic within your queries. It enhances the flexibility and readability of SQL statements, enabling sophisticated data manipulation and analysis.
+
+
+
+### What is a Stored Procedure?
+A stored procedure is a prepared SQL code that you can save, so the code can be reused over and over again.
+
+So if you have an SQL query that you write over and over again, save it as a stored procedure, and then just call it to execute it.
+
+You can also pass parameters to a stored procedure, so that the stored procedure can act based on the parameter value(s) that is passed.
+
+(A stored procedure is a precompiled collection of SQL statements and optional control-of-flow statements, stored under a name and processed as a unit. Stored procedures allow for modular, reusable code and can improve performance because the SQL statements are precompiled. They can accept input parameters, output parameters, and return multiple result sets.)
+
+### Benefits of Stored Procedures
+
+1. **Performance**: Since stored procedures are precompiled, they often run faster than dynamic SQL.
+2. **Modularity**: They allow for modular programming, where different procedures can be developed and tested independently.
+3. **Security**: They can help enforce security policies by controlling user access to the underlying data.
+4. **Maintainability**: Changes to business logic can be made in one place and affect all applications that use the stored procedure.
+
+### Syntax
+
+#### Creating a Stored Procedure
+
+**SQL Server:**
+
+```sql
+CREATE PROCEDURE procedure_name
+    @parameter1 datatype,
+    @parameter2 datatype OUTPUT,
+    ...
+AS
+BEGIN
+    -- SQL statements
+END;
+```
+
+**MySQL:**
+
+```sql
+CREATE PROCEDURE procedure_name(IN parameter1 datatype, OUT parameter2 datatype, ...)
+BEGIN
+    -- SQL statements
+END;
+```
+
+**Oracle:**
+
+```sql
+CREATE PROCEDURE procedure_name (
+    parameter1 IN datatype,
+    parameter2 OUT datatype,
+    ...
+) AS
+BEGIN
+    -- SQL statements
+END;
+```
+
+### Examples
+
+#### 1. Simple Stored Procedure
+
+To create a stored procedure that retrieves all employees from a specific department:
+
+**SQL Server:**
+
+```sql
+CREATE PROCEDURE GetEmployeesByDepartment
+    @DepartmentId INT
+AS
+BEGIN
+    SELECT EmployeeId, FirstName, LastName, DepartmentId
+    FROM Employees
+    WHERE DepartmentId = @DepartmentId;
+END;
+```
+
+**MySQL:**
+
+```sql
+DELIMITER //
+
+CREATE PROCEDURE GetEmployeesByDepartment(IN DepartmentId INT)
+BEGIN
+    SELECT EmployeeId, FirstName, LastName, DepartmentId
+    FROM Employees
+    WHERE DepartmentId = DepartmentId;
+END //
+
+DELIMITER ;
+```
+
+#### 2. Stored Procedure with Output Parameter
+
+To create a stored procedure that calculates the total sales for a specific employee and returns it:
+
+**SQL Server:**
+
+```sql
+CREATE PROCEDURE GetTotalSales
+    @EmployeeId INT,
+    @TotalSales DECIMAL(10, 2) OUTPUT
+AS
+BEGIN
+    SELECT @TotalSales = SUM(SalesAmount)
+    FROM Sales
+    WHERE EmployeeId = @EmployeeId;
+END;
+```
+
+**MySQL:**
+
+```sql
+DELIMITER //
+
+CREATE PROCEDURE GetTotalSales(IN EmployeeId INT, OUT TotalSales DECIMAL(10, 2))
+BEGIN
+    SELECT SUM(SalesAmount) INTO TotalSales
+    FROM Sales
+    WHERE EmployeeId = EmployeeId;
+END //
+
+DELIMITER ;
+```
+
+#### 3. Stored Procedure with Conditional Logic
+
+To create a stored procedure that updates an employee's salary based on their performance rating:
+
+**SQL Server:**
+
+```sql
+CREATE PROCEDURE UpdateSalaryBasedOnRating
+    @EmployeeId INT,
+    @Rating VARCHAR(10)
+AS
+BEGIN
+    IF @Rating = 'Excellent'
+    BEGIN
+        UPDATE Employees
+        SET Salary = Salary * 1.10
+        WHERE EmployeeId = @EmployeeId;
+    END
+    ELSE IF @Rating = 'Good'
+    BEGIN
+        UPDATE Employees
+        SET Salary = Salary * 1.05
+        WHERE EmployeeId = @EmployeeId;
+    END
+    ELSE
+    BEGIN
+        UPDATE Employees
+        SET Salary = Salary * 1.02
+        WHERE EmployeeId = @EmployeeId;
+    END
+END;
+```
+
+**MySQL:**
+
+```sql
+DELIMITER //
+
+CREATE PROCEDURE UpdateSalaryBasedOnRating(IN EmployeeId INT, IN Rating VARCHAR(10))
+BEGIN
+    IF Rating = 'Excellent' THEN
+        UPDATE Employees
+        SET Salary = Salary * 1.10
+        WHERE EmployeeId = EmployeeId;
+    ELSEIF Rating = 'Good' THEN
+        UPDATE Employees
+        SET Salary = Salary * 1.05
+        WHERE EmployeeId = EmployeeId;
+    ELSE
+        UPDATE Employees
+        SET Salary = Salary * 1.02
+        WHERE EmployeeId = EmployeeId;
+    END IF;
+END //
+
+DELIMITER ;
+```
+
+### Executing a Stored Procedure
+
+#### SQL Server
+
+To execute the stored procedure `GetEmployeesByDepartment`:
+
+```sql
+EXEC GetEmployeesByDepartment @DepartmentId = 1;
+```
+
+To execute the stored procedure `GetTotalSales` and get the output value:
+
+```sql
+DECLARE @TotalSales DECIMAL(10, 2);
+EXEC GetTotalSales @EmployeeId = 1, @TotalSales = @TotalSales OUTPUT;
+SELECT @TotalSales;
+```
+
+#### MySQL
+
+To execute the stored procedure `GetEmployeesByDepartment`:
+
+```sql
+CALL GetEmployeesByDepartment(1);
+```
+
+To execute the stored procedure `GetTotalSales` and get the output value:
+
+```sql
+CALL GetTotalSales(1, @TotalSales);
+SELECT @TotalSales;
+```
+
+### Important Points
+
+- **Error Handling**: Implement error handling within your stored procedures to manage exceptions and unexpected conditions.
+- **Transactions**: Use transactions within stored procedures to ensure data integrity.
+- **Permissions**: Ensure that appropriate permissions are granted to users to execute stored procedures.
+- **Optimization**: Optimize stored procedures to enhance performance, especially when dealing with large datasets or complex logic.
+
+Stored procedures are a powerful feature in SQL that help encapsulate business logic, improve performance, and maintain data integrity. By using stored procedures, you can ensure that your database operations are efficient, secure, and manageable.
+
+### SQL comments
+In SQL, comments are used to add explanatory notes within the code. They are ignored by the database engine during query execution and are purely for human readability. Comments help improve the understanding of the code for developers, maintainers, and anyone else who may review it.
+
+### Syntax
+
+#### Single-Line Comments
+
+In MySQL and PostgreSQL, single-line comments start with `--` or `#` and continue until the end of the line.
+
+```sql
+-- This is a single-line comment in MySQL
+# This is also a single-line comment in MySQL
+
+-- This is a single-line comment in PostgreSQL
+```
+
+#### Multi-Line Comments
+
+MySQL and PostgreSQL support multi-line comments enclosed between `/*` and `*/`.
+
+```sql
+/* This is a
+   multi-line comment */
+```
+
+### Example
+
+```sql
+-- This query selects all columns from the "employees" table
+SELECT *
+FROM employees
+WHERE department_id = 10; -- Selects employees from department 10
+
+/* 
+This query calculates the total sales amount
+for each employee and orders the results by
+the total sales amount in descending order
+*/
+SELECT employee_id,
+       SUM(sales_amount) AS total_sales
+FROM sales
+GROUP BY employee_id
+ORDER BY total_sales DESC;
+```
+
+### Importance of Comments
+
+1. **Code Documentation**: Comments provide context and explanation for the code, making it easier for others to understand its purpose and functionality.
+2. **Code Maintenance**: Comments help developers understand the code they are working with, making it easier to update, modify, or debug.
+3. **Collaboration**: Comments facilitate collaboration among team members by improving code comprehension and reducing ambiguity.
+4. **Regulatory Compliance**: In regulated industries, comments may be required to document compliance with standards and regulations.
+
+### Best Practices
+
+1. **Be Clear and Concise**: Write comments that are informative but not overly verbose.
+2. **Update Comments with Code**: Keep comments synchronized with the code they refer to, especially after making changes.
+3. **Avoid Redundancy**: Don't duplicate information already evident in the code; focus on providing additional insights or clarifications.
+4. **Use Standard Formats**: Follow established conventions for writing comments to maintain consistency across the codebase.
+
+### Conclusion
+
+Comments are an essential aspect of writing maintainable and understandable SQL code. By incorporating comments effectively, you can improve code quality, facilitate collaboration, and ensure that your SQL queries are comprehensible to others.
+
+
+SQL operators are symbols or keywords used in SQL statements to perform operations such as arithmetic operations, comparison operations, logical operations, and string operations. Here are some common SQL operators:
+
+### Arithmetic Operators
+
+1. **Addition (+)**: Adds two values.
+2. **Subtraction (-)**: Subtracts one value from another.
+3. **Multiplication (*)**: Multiplies two values.
+4. **Division (/)**: Divides one value by another.
+5. **Modulus (%)**: Returns the remainder of a division.
+
+### Comparison Operators
+
+1. **Equal to (=)**: Compares if two values are equal.
+2. **Not equal to (<>, !=)**: Compares if two values are not equal.
+3. **Greater than (>)**: Compares if one value is greater than another.
+4. **Less than (<)**: Compares if one value is less than another.
+5. **Greater than or equal to (>=)**: Compares if one value is greater than or equal to another.
+6. **Less than or equal to (<=)**: Compares if one value is less than or equal to another.
+7. **LIKE**: Compares a value to a pattern using wildcard characters.
+8. **BETWEEN**: Checks if a value is within a range of values.
+9. **IN**: Checks if a value matches any value in a list.
+
+### Logical Operators
+
+1. **AND**: Returns true if all conditions are true.
+2. **OR**: Returns true if any condition is true.
+3. **NOT**: Negates a condition.
+
+### String Operators
+
+1. **Concatenation (||)**: Concatenates two strings.
+2. **LIKE**: Compares a value to a pattern using wildcard characters.
+
+### Other Operators
+
+1. **IS NULL**: Checks if a value is NULL.
+2. **IS NOT NULL**: Checks if a value is not NULL.
+
+### Example Usage
+
+```sql
+-- Arithmetic operators
+SELECT 10 + 5; -- Returns 15
+SELECT 10 - 5; -- Returns 5
+SELECT 10 * 5; -- Returns 50
+SELECT 10 / 5; -- Returns 2
+SELECT 10 % 3; -- Returns 1
+
+-- Comparison operators
+SELECT * FROM employees WHERE salary > 50000;
+SELECT * FROM products WHERE category_id <> 2;
+SELECT * FROM orders WHERE order_date >= '2022-01-01';
+
+-- Logical operators
+SELECT * FROM customers WHERE city = 'New York' AND age > 30;
+SELECT * FROM products WHERE price < 100 OR stock_quantity > 0;
+SELECT * FROM employees WHERE NOT department_id = 10;
+
+-- String operators
+SELECT first_name || ' ' || last_name AS full_name FROM employees;
+SELECT * FROM products WHERE product_name LIKE '%apple%';
+
+-- Other operators
+SELECT * FROM employees WHERE commission IS NULL;
+SELECT * FROM employees WHERE department_id IN (1, 2, 3);
+```
+
+These operators are fundamental to constructing SQL queries for data retrieval, manipulation, and analysis. Understanding their usage is crucial for effective SQL programming.
